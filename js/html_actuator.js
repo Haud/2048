@@ -62,7 +62,7 @@ HTMLActuator.prototype.addTile = function (tile) {
   this.applyClasses(wrapper, classes);
 
   inner.classList.add("tile-inner");
-  inner.textContent = tile.value;
+  this.tileValueConversion(inner, tile.value);
 
   if (tile.previousPosition) {
     // Make sure that the tile gets rendered in the previous position first
@@ -89,6 +89,72 @@ HTMLActuator.prototype.addTile = function (tile) {
   // Put the tile on the board
   this.tileContainer.appendChild(wrapper);
 };
+
+HTMLActuator.prototype.tileValueConversion = function(tile, value){
+
+	switch (value){
+		case 2:
+			this.generateInnerTable(tile, 'That\'s Flagrant');
+			//tile.textContent = 'That\'s Flagrant';
+			break;
+		case 4:
+			this.generateInnerTable(tile, 'Come on');
+			break;
+		case 8:
+			{
+				var imageDiv = document.createElement("img");
+				imageDiv.setAttribute('src', '../2048/Images/peanutz.png')
+				tile.appendChild(imageDiv);
+			}			
+			break;
+		case 16:
+			this.generateInnerTable(tile, 'Chocolate Axe');
+			break;
+		case 32:
+			this.generateInnerTable(tile, 'Gorpheus');
+			break;
+		case 64:
+			this.generateInnerTable(tile, 'Whiteboard of Women');
+			break;
+		case 128:
+			this.generateInnerTable(tile, 'The Matrix');
+			break;
+		case 256:
+			this.generateInnerTable(tile, 'Absolutely not HR');
+			break;
+		case 512:
+			{
+				var imageDiv = document.createElement("img");
+				imageDiv.setAttribute('src', '../2048/Images/ehr.png')
+				tile.appendChild(imageDiv);
+			}	
+			break;
+		case 1024:
+			this.generateInnerTable(tile, 'Pink Nookie');
+			break;
+		case 2048:
+			this.generateInnerTable(tile, 'That\'s the good Life');
+			break;
+		default:
+			tile.textContent = value;
+			break;
+	}
+}
+
+HTMLActuator.prototype.generateInnerTable = function(tile, value){
+	var table = document.createElement('table');
+	table.setAttribute('style', 'width: 100%;height:100%');
+	
+	var row = document.createElement('tr');
+	table.appendChild(row);
+	
+	var cell = document.createElement('td');
+	cell.textContent = value;
+	
+	row.appendChild(cell);
+	
+	tile.appendChild(table);
+}
 
 HTMLActuator.prototype.applyClasses = function (element, classes) {
   element.setAttribute("class", classes.join(" "));
@@ -126,7 +192,7 @@ HTMLActuator.prototype.updateBestScore = function (bestScore) {
 
 HTMLActuator.prototype.message = function (won) {
   var type    = won ? "game-won" : "game-over";
-  var message = won ? "You win!" : "Game over!";
+  var message = won ? "That's the Good Life right there." : "Game over!";
 
   this.messageContainer.classList.add(type);
   this.messageContainer.getElementsByTagName("p")[0].textContent = message;
